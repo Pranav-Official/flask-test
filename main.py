@@ -26,6 +26,7 @@ def example(uploads_dir):
 # Route for home page
 @app.route('/')
 def index():
+    shutil.rmtree(os.path.abspath(app.config['UPLOAD_FOLDER']))
     return render_template('index.html')
 
 # Route for download page
