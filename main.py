@@ -46,7 +46,8 @@ def get_pdf():
 def upload():
     files = request.files.getlist('file')
     filenames = []
-    os.mkdir(os.path.abspath(app.config['UPLOAD_FOLDER']))
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.mkdir(os.path.abspath(app.config['UPLOAD_FOLDER']))
     for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
