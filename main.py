@@ -3,6 +3,7 @@ import os
 import shutil
 from flask import Flask, request, redirect, url_for, render_template, send_file
 from werkzeug.utils import secure_filename
+import threading
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -50,6 +51,9 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            t = threading.Thread(target=example, args=(os.path.join(app.config['UPLOAD_FOLDER'], filename),))
+            t.start()
+            t.join()
             filenames.append(filename)
     # Call example function with uploads directory path
     images_to_pdf(os.path.abspath(app.config['UPLOAD_FOLDER']))
